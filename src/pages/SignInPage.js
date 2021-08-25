@@ -7,10 +7,10 @@ import {
     Heading,
     Input,
     Stack,
-    useColorModeValue,
     Text,
     Center
   } from '@chakra-ui/react';
+  import Card from '../core/components/Card'
 import SocialMediaButton from '../core/components/SocialMediaButton';
   
   export default function SignInPage() {
@@ -24,16 +24,7 @@ import SocialMediaButton from '../core/components/SocialMediaButton';
         justify={'center'}
         overflow='scroll'
         >
-        <Stack
-          spacing={4}
-          w={'full'}
-          margin={5}
-          maxW={'md'}
-          bg={useColorModeValue('white', 'gray.700')}
-          rounded={'xl'}
-          boxShadow={'lg'}
-          p={6}
-          my={12}>
+          <Card>    
           <Heading lineHeight={1.1} fontSize={{ base: '2xl', md: '3xl' }}>
             Sign in to you account
           </Heading>
@@ -63,8 +54,7 @@ import SocialMediaButton from '../core/components/SocialMediaButton';
             </Center>
             <SocialMediaButton />
           </Stack>
-          
-        </Stack>
+        </Card>
       </Flex>
     );
   }

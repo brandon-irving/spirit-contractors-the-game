@@ -1,13 +1,16 @@
 import './App.css';
 import { ChakraProvider } from "@chakra-ui/react"
-
-import SignInPage from './pages/SignInPage';
+import CorePage from './core/components/CorePage'
+// import SignInPage from './pages/SignInPage';
 import theme from './core/theme';
-
+import CreateACharacter from './pages/CreateACharacter';
 function App() {
   return (
     <ChakraProvider theme={theme}>
-    <SignInPage />
+    {/* <SignInPage /> */}
+    <CorePage>
+      <CreateACharacter />
+      </CorePage>
   </ChakraProvider>
   );
 }

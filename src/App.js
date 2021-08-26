@@ -1,15 +1,17 @@
 import "./App.css";
 import { ChakraProvider } from "@chakra-ui/react";
-import CorePage from "./core/components/CorePage";
+// import CorePage from "./core/components/CorePage";
 import theme from "./core/theme";
-import CreateACharacter from "./pages/CreateACharacter";
+import GamePage from "./pages/GamePage";
+// import CreateACharacter from "./pages/CreateACharacter";
 
 function App() {
   return (
     <ChakraProvider theme={theme}>
-      <CorePage>
+      {/* <CorePage>
         <CreateACharacter />
-      </CorePage>
+      </CorePage> */}
+      <GamePage />
     </ChakraProvider>
   );
 }

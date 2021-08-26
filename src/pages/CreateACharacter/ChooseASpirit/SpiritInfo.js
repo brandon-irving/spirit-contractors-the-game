@@ -51,7 +51,7 @@ export default function SpiritInfo({ selectedSpirit, setselectedSpirit, spirit, 
         <Text align='center' fontWeight='bold'>Strategy</Text>
           <Text>{strategy}</Text>
 
-        <Stack mt={8} direction={"row"} spacing={4}>
+        {!!setselectedSpirit && <Stack mt={8} direction={"row"} spacing={4}>
           <Button
           onClick={handleFormContract}
             flex={1}
@@ -82,7 +82,7 @@ export default function SpiritInfo({ selectedSpirit, setselectedSpirit, spirit, 
           >
             Return to list
           </Button>
-        </Stack>
+        </Stack>}
       </Box>
     </Center>
   );

@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from "react";
 import {
   Button,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
   Text,
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
 import { BsFillCaretRightFill, BsCheckCircle } from "react-icons/bs";
-import SpiritInfo from "./SpiritInfo";
+import SpiritModal from "../../../core/components/SpiritModal";
 const spirits = [
   {
     name: "Lucky Bunny",
@@ -177,28 +171,14 @@ const ChooseASpirit = ({ spirit: defaultSpirit, updateCharacter }) => {
           </Button>
         );
       })}
-      <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
-        <ModalOverlay />
-        <ModalContent
-          w={"full"}
-          bg={useColorModeValue("white", "gray.900")}
-          boxShadow={"2xl"}
-          rounded={"lg"}
-          p={6}
-          textAlign={"center"}
-        >
-          <ModalHeader>Spirit</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <SpiritInfo
-              selectedSpirit={selectedSpirit}
+      <SpiritModal 
+      isOpen={isOpen}
+      onClose={onClose}
+      selectedSpirit={selectedSpirit}
               setselectedSpirit={setselectedSpirit}
-              closeModal={onClose}
               spirit={spirit}
-            />
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+      />
+     
     </>
   );
 };

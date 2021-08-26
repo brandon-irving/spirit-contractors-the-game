@@ -107,7 +107,7 @@ function handleSpiritClick(spirit){
     these spirits have agreed to form a contract with you. Choose the spirit you most resonate with!
     </Text>
         {spirits.map((s, i) => (
-        <Button justifyContent='space-between' rightIcon={selectedSpirit === s ? <BsCheckCircle color={'green'} />: <BsFillCaretRightFill color='black' />} size='lg' onClick={()=>handleSpiritClick(s)} key={i} p={3} bg={"white"}>
+        <Button border={selectedSpirit === s ? 'solid 3px green' : ''} justifyContent='space-between' rightIcon={selectedSpirit === s ? <BsCheckCircle color={'green'} />: <BsFillCaretRightFill color='black' />} size='lg' onClick={()=>handleSpiritClick(s)} key={i} p={3} bg={"white"}>
           <Text color='black'>{s.name}</Text>
         </Button>
       ))}

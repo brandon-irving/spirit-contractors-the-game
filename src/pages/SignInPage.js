@@ -24,7 +24,7 @@ import SocialMediaButton from '../core/components/SocialMediaButton';
         justify={'center'}
         overflow='scroll'
         >
-          <Card>    
+          <Card container>    
           <Heading lineHeight={1.1} fontSize={{ base: '2xl', md: '3xl' }}>
             Sign in to you account
           </Heading>

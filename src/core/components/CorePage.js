@@ -5,6 +5,7 @@ const CorePage = ({children}) => {
     return (
         <Flex
         minH={'10vh'}
+        m={5}
         align={'center'}
         justify={'center'}
         overflow='scroll'

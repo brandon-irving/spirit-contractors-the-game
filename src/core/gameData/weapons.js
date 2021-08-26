@@ -1,0 +1,36 @@
+export const weapons =  {
+    'Short Sword':{
+        name: 'Short Sword',
+        roll: '1d6',
+        range: '5ft',
+        desc: 'A basic combat blade made of steel',
+        abilities: [],
+        amount: 0,
+        cost: 10,
+        requirements: '',
+        img: 'https://i1.wp.com/sabersmith.com/wp-content/uploads/2016/12/shortsword.jpg?fit=2848%2C4272&ssl=1',
+    },
+    'Long Sword':{
+        name: 'Long Sword',
+        roll: '1d8',
+        range: '5ft',
+        desc: 'A long blade made of steel',
+        abilities: [],
+        amount: 0,
+        cost: 15,
+        requirements: {Strength: 12},
+        img: 'https://www.thehemashop.com/media/catalog/product/cache/3/image/650x/20737efe5af96e140e6c181cee6f11d7/1/2/120252_2_.jpg',
+    },
+    'Short Bow':{
+        name: 'Short Bow',
+        roll: '1d6',
+        range: '5ft',
+        desc: 'A simple bow with a quiver that holds 30 arrows',
+        arrowCount: 30,
+        abilities: [],
+        cost: 25,
+        requirements: {Dexterity: 12},
+        img: 'https://www.reliks.com/products/6017/400x225/1.jpg',
+    },
+}
+

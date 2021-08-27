@@ -7,7 +7,7 @@ const GlobalContext = React.createContext()
 export function GlobalProvider({children}) {
   const [user, setuser] = React.useState(null)
   const [loading, setloading] = React.useState(true)
-  const [coreUser, coreLoading] = useAuthState(auth);
+  const [coreUser, coreLoading, ] = useAuthState(auth);
   const [isLoggedIn, setisLoggedInCore] = React.useState(sessionStorage.isLoggedIn || false)
     
     function setisLoggedIn(val){
@@ -17,13 +17,17 @@ export function GlobalProvider({children}) {
     }
 
     async function handleSignIn(){
-      if(coreLoading) return 
-      if(coreUser){
-        const userRef = firestore.doc(`users/${coreUser.email}`);
-        const user = await userRef.get() || {};
-        if(user.exists) setuser(user.data())  
+      try{
+        if(coreUser && !coreLoading){
+          const userRef = firestore.doc(`users/${coreUser.email}`);
+          const user = await userRef.get() || {};
+          if(user.exists) setuser(user.data())  
+          setloading(false)
+        }
+      }catch(e){
+        console.log('log: error', e)
+        setloading(false)
       }
-      setloading(false)
     }
 
     React.useEffect(() => {
@@ -31,7 +35,7 @@ export function GlobalProvider({children}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [coreUser])
   return (
-    <GlobalContext.Provider value={{user, setuser, isLoggedIn, setisLoggedIn, loading: loading || coreLoading}} children={children} />
+    <GlobalContext.Provider value={{user, setuser, isLoggedIn, setisLoggedIn, loading: coreLoading || loading }} children={children} />
   )
 }
 

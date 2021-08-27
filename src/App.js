@@ -14,6 +14,9 @@ import { GlobalProvider, useGlobalContext } from "./context/globalContext";
 
 const PrivateRoute = ({ children, ...rest }) => {
   const { user, loading, isLoggedIn } = useGlobalContext();
+// console.log('log: user, loading,',{
+//   user, loading, isLoggedIn
+// })
 
   if (loading) return null;
   return (

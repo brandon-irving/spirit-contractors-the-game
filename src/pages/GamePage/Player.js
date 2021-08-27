@@ -77,7 +77,6 @@ const Player = () => {
   const maxMp =  user.stats.Wisdom +
   10 +
   statBoostGenerator(user.stats.Wisdom)
-  console.log('log: user.spirit', user.spirit)
   
   return (
     <div>

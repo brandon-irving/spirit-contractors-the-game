@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import Card from "../core/components/Card";
 import SocialMediaButton from "../core/components/SocialMediaButton";
-import { auth, createUser, firestore, generateUserDocument } from "../core/firebaseConfig";
+import { auth, createUser, firestore } from "../core/firebaseConfig";
 import { useGlobalContext } from "../context/globalContext";
 import { useHistory } from "react-router-dom";
 
@@ -36,8 +36,10 @@ export default function SignInPage() {
         if(user.exists) setuser(user.data())  
       }
       else {
-       const user = await createUser(userCredentials.email, userCredentials.password)
-        setuser(user)
+       const {user: { displayName, email, uid }} = await createUser(userCredentials.email, userCredentials.password)
+       console.log('log: user', { displayName, email, uid })
+        
+       setuser({ displayName, email, uid })
         location='/create'
       }
     } catch (e) {
@@ -48,9 +50,8 @@ export default function SignInPage() {
   }
 
   function handleRedirect(){  
-    const isOnSignInPage = window.location.href.includes('signin') 
     const isSignedIn = user && isLoggedIn 
-    if(!isSignedIn) return 
+    if(!isSignedIn) return     
     if(!user.name) history.push('/create')
     else history.push('/')
   }

@@ -17,9 +17,10 @@ import { useGlobalContext } from "../context/globalContext";
 import { useHistory } from "react-router-dom";
 
 export default function SignInPage() {
-  const {  user, setuser, loading, isLoggedIn, setisLoggedIn } = useGlobalContext()
+  const {  user, setuser, loading, isLoggedIn, setisLoggedIn, successToaster, errorToaster } = useGlobalContext()
   const history = useHistory()
   const [isSignIn, setisSignIn] = useState(true);
+  const [signingIn, setsigningIn] = useState(false);
   const [userCredentials, setuserCredentials] = useState({email: '', password: ''})
   
   function updateCredentials(updates={}){
@@ -29,6 +30,7 @@ export default function SignInPage() {
   async function handleSubmit() {
     let location = '/'
     let signinState = true
+    setsigningIn(true)
     try {
       if (isSignIn){
         const {user: coreUser = {email: ''}} = await auth.signInWithEmailAndPassword(userCredentials.email, userCredentials.password);
@@ -39,21 +41,20 @@ export default function SignInPage() {
          setuser({uid: coreUser.uid, email: coreUser.email, displayName: coreUser.displayName})
           location = '/create'
         }
-        
       }
       else {
        const {user: { displayName, email, uid }} = await createUser(userCredentials.email, userCredentials.password)
        setuser({ displayName, email, uid })
       location='/create'
       }
+      successToaster('Signed in successfully')
     } catch (e) {
       signinState = false
       location = '/signin'
-      console.log("log: error message", e.message);
+      errorToaster(`Signed in failed: ${e}`)
     }  
-    
-    console.log('log: location', location)
     setisLoggedIn(signinState)
+    setsigningIn(false)
     history.push(location)
   }
 
@@ -100,6 +101,8 @@ export default function SignInPage() {
         </FormControl>
         <Stack spacing={6}>
           <Button
+          isLoading={signingIn}
+          loadingText='Signing in'
             onClick={handleSubmit}
             bg={"blue.400"}
             color={"white"}

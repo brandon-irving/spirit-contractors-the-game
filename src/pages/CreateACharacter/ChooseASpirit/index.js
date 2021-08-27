@@ -58,7 +58,7 @@ const spirits = [
         desc: "You can create a shield of light to defend against attacks (the more the light the stronger the shield max: 5)",
       },
     ],
-    img: "https://image.shutterstock.com/image-photo/futuristic-space-particles-bright-round-260nw-1357818467.jpg",
+    img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1J4GxqAnRL_9TgvvuXamTqNdaXYOFdIC4BA&usqp=CAU',
     strategy:
       "Stay in the light or create light. Maybe purchase a flashlight or a lamp before you head into battle. Avoid leading the charge at night and if you need to, keep a flash bang handy!",
   },
@@ -76,7 +76,7 @@ const spirits = [
         desc: "You can launch your ice 15ft straight. The damage of the ice depends on its size",
       },
     ],
-    img: "https://image.shutterstock.com/image-photo/black-white-beautiful-tiger-isolated-260nw-385167907.jpg",
+    img: 'https://i.pinimg.com/originals/25/81/ff/2581ffd0742db1612103f5db349b5d73.jpg',
     strategy:
       "Strategy: Bring water bottles, jugs, whatever you can think of that can carry water. You can also freeze water into weapons, tools, etc. Get creative and try to be as flexible as water!",
   },
@@ -94,7 +94,7 @@ const spirits = [
         desc: "You can add your hp and mp, then divide them evenly. Can only be done once every 24hrs",
       },
     ],
-    img: "https://image.shutterstock.com/image-photo/statue-justice-symbol-legal-law-260nw-681265648.jpg",
+    img: 'https://thumbor.forbes.com/thumbor/960x0/https%3A%2F%2Fspecials-images.forbesimg.com%2Fimageserve%2F6036a2d1c1500c374ffcbf2f%2FLegal-law-concept-statue-of-Lady-Justice-with-scales-of-justice-sky-background%2F960x0.jpg%3FcropX1%3D53%26cropX2%3D1476%26cropY1%3D0%26cropY2%3D909',
     strategy:
       "This ability is perfect for a support character (like a healer or long ranged fighter). With your balanced thoughts, you can quickly deduce a monsters weakness and with true balance, you can save yourself in a pinch! ",
   },
@@ -109,7 +109,7 @@ const spirits = [
       },
       { name: "Blast of Freedom", desc: "You can shoot water 15ft " },
     ],
-    img: "https://image.shutterstock.com/image-illustration/jumping-orca-260nw-674298346.jpg",
+    img: 'https://i.pinimg.com/originals/22/c8/fd/22c8fd264a4ca7e00544e106b23d19f5.jpg',
     strategy:
       "This ability is for a healing character. Stay within range of an attacker and heal them as they defend you. Keeping cantenes of water will prove useful and basing your strategies around being near large bodies of water will be ideal",
   },
@@ -123,7 +123,7 @@ const spirits = [
         desc: "You can gather material and change it into something else",
       },
     ],
-    img: "https://image.shutterstock.com/image-photo/fantasy-witch-wizard-woman-using-260nw-1658387587.jpg",
+    img: 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/2/the-alchemist-cameron-gray.jpg',
     strategy:
       "This ability is exceptionally versatile but it heavily relies on your knowledge of alchemy, biology, earth metals, etc. Before going into battle, try going to a school, library or workshop and gain knowledge. This will make your ability extraordinarily useful",
   },

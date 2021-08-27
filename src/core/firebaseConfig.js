@@ -14,6 +14,11 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 export const auth = firebase.auth();
+export const createUser = async(email, password) =>{
+    const user = await auth.createUserWithEmailAndPassword(email, password)
+    console.log('log: user', user)    
+    return user
+}
 export const firestore = firebase.firestore();
 export const updateUserDocument = async (user, updates={})=>{
     const userRef = firestore.doc(`users/${user.email}`);

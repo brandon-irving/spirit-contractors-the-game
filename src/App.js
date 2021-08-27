@@ -9,19 +9,17 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  useHistory,
 } from "react-router-dom";
 import { GlobalProvider, useGlobalContext } from "./context/globalContext";
 
 const PrivateRoute = ({ children, ...rest }) => {
-  const { loading, isLoggedIn } = useGlobalContext();
-  const history = useHistory();
+  const { user, loading, isLoggedIn } = useGlobalContext();
 
   if (loading) return null;
   return (
     <Route
       {...rest}
-      render={() => (isLoggedIn ? children : history.push("/signin"))}
+      render={() => (user && isLoggedIn ? children : <SignInPage />)}
     />
   );
 };

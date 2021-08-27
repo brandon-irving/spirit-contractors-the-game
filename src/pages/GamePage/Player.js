@@ -22,36 +22,17 @@ import { statBoostGenerator } from "../../helpers/statBoostGenerator";
 
 import "./Player.css";
 
-const spirit = {
-  name: "Lucky Bunny",
-  desc: "An average sized bunny, that wears a a turtle neck, shades and a gold necklace. He is the chief proprietor of luck and knows it. The only thing this bunny is interested in, is business. So hes always willing to sell you some luck, for the right price.",
-  element: "None",
-  abilities: [
-    {
-      name: "Luck Purchase",
-      desc: "You can sell hp to increase your roll boost. Every 5hp is +1",
-    },
-    {
-      name: "Gambling Foot",
-      desc: "You can bet some of your hp on a second chance to roll",
-    },
-  ],
-  img: "https://image.shutterstock.com/image-illustration/portrait-hare-suit-hand-drawn-260nw-330857777.jpg",
-  strategy:
-    "Hp is always a currency Lucky accepts, so stay near a healer and have plenty of potions around. If you ever come across something valuable, try haggling. With a silver tongue and some luck, you just might strike a deal with this bunny!",
-};
-
 const PlayerSection = (props) => (
   <Box p={2} m={0} w="100vw" color="black" {...props} />
 );
-const CharacterAlias = ({ name = "Your Name", gil = "0 gil", level = "1" }) => (
+const CharacterAlias = ({ name = "Your Name", gil = 0, level = "1" }) => (
   <Stack fontSize="10pt" direction="column">
     <Text style={{ margin: 0 }}>{name}</Text>
-    <Text style={{ margin: 0 }}>{gil}</Text>
+    <Text style={{ margin: 0 }}>{gil} gil</Text>
     <Text style={{ margin: 0 }}>Level {level}</Text>
   </Stack>
 );
-const HitPoints = ({ hp, maxHp }) => (
+const Points = ({ title='', amount, maxAmount }) => (
   <Box
     fontSize="15pt"
     m={0}
@@ -62,10 +43,10 @@ const HitPoints = ({ hp, maxHp }) => (
     color="white"
   >
     <Text mt={-3} fontSize="8pt">
-      Hit Points
+      {title}
     </Text>
     <Text>
-      {hp}/{maxHp}
+      {amount}/{maxAmount}
     </Text>
   </Box>
 );
@@ -77,7 +58,7 @@ const InfoStat = ({ label, value, text }) => (
   </Stat>
 );
 const Player = () => {
-  const { user, setisLoggedIn } = useGlobalContext();
+  const { user, setuser, setisLoggedIn } = useGlobalContext();
   const [isOpen, setIsOpen] = React.useState(false);
   const [isActionModalOpen, setisActionModalOpen] = React.useState(false);
 
@@ -86,7 +67,8 @@ const Player = () => {
   }
 
   function handleSignOut() {
-    setisLoggedIn(false);
+    setuser(null)
+    setisLoggedIn(false)
   }
   const weapon = weapons[user.weapon];
   const maxHp =  user.stats.Constitution +
@@ -95,6 +77,8 @@ const Player = () => {
   const maxMp =  user.stats.Wisdom +
   10 +
   statBoostGenerator(user.stats.Wisdom)
+  console.log('log: user.spirit', user.spirit)
+  
   return (
     <div>
       <PlayerSection bg="black">
@@ -110,13 +94,19 @@ const Player = () => {
         <Stack direction="row" align="center" justify="space-between">
           <Stack direction="row">
             <Avatar src="" />
-            <CharacterAlias name={user.name} />
+            <CharacterAlias gil={user.gil} name={user.name} />
           </Stack>
-          <Stack>
-            <HitPoints
-              hp={user.hp}
-              maxHp={maxHp}
+          <Stack direction='row'>
+          <Points
+          title='Hp Points'
+              amount={user.hp}
+              maxAmount={maxHp}
             />
+            <Points
+            title='Mp Points'
+            amount={user.mp}
+            maxAmount={maxMp}
+          />
           </Stack>
         </Stack>
       </PlayerSection>
@@ -195,10 +185,18 @@ const Player = () => {
           <Gauge value={user.mp} maxValue={maxMp} convert color="blue" />
         </Box>
       </Stack>
+      <Stack align='center' m={10} mt={6}>
+        <Text>Abilities</Text>
+       <ul>
+         {user.spirit.abilities.map((ability, i)=>{
+           return <li key={i}>{ability.name}</li>
+         })}
+       </ul>
+      </Stack>
       <SpiritModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        spirit={spirit}
+        spirit={user.spirit}
       />
       <ActionsModal
         isOpen={isActionModalOpen}

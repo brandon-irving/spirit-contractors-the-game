@@ -17,6 +17,7 @@ const defaultCharacter = {
   spirit: "",
   stats: defaultStats,
   weapon: 'Short Sword',
+  gil: 10,
 };
 
 const CreateACharacter = () => {
@@ -36,9 +37,10 @@ const CreateACharacter = () => {
   }
 
   async function handleComplete() {
-    console.log('log: handleComplete', character)
+    console.log('log: handleComplete', {user, character})
     await updateUserDocument(user, {
       ...character,
+      gil: 10,
       hp:
         character.stats.Constitution +
         10 +

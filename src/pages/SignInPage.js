@@ -12,48 +12,47 @@ import {
 } from "@chakra-ui/react";
 import Card from "../core/components/Card";
 import SocialMediaButton from "../core/components/SocialMediaButton";
-import { auth, generateUserDocument } from "../core/firebaseConfig";
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { auth, createUser, firestore, generateUserDocument } from "../core/firebaseConfig";
 import { useGlobalContext } from "../context/globalContext";
 import { useHistory } from "react-router-dom";
 
 export default function SignInPage() {
-  const { user, loading, setisLoggedIn } = useGlobalContext()
+  const {  user, setuser, loading, isLoggedIn, setisLoggedIn } = useGlobalContext()
   const history = useHistory()
-  const [createUserWithEmailAndPassword] = useCreateUserWithEmailAndPassword(auth);
   const [isSignIn, setisSignIn] = useState(true);
-  const [completedSignUp, setcompletedSignUp] = useState(false);
+  const [userCredentials, setuserCredentials] = useState({email: '', password: ''})
+  
+  function updateCredentials(updates={}){
+    setuserCredentials({...userCredentials, ...updates})
+  }
 
   async function handleSubmit() {
+    let location = '/'
     try {
       if (isSignIn){
-        await auth.signInWithEmailAndPassword("test@test.com", "password");
-        setisLoggedIn(true)
-        history.push('/')
+        const {user: coreUser = {email: ''}} = await auth.signInWithEmailAndPassword(userCredentials.email, userCredentials.password);
+        const userRef = firestore.doc(`users/${coreUser.email}`);
+        const user = await userRef.get() || {};
+        if(user.exists) setuser(user.data())  
       }
       else {
-        await createUserWithEmailAndPassword("test@test.com", "password");
-        setisLoggedIn(true)
-        setcompletedSignUp(true);
+       const user = await createUser(userCredentials.email, userCredentials.password)
+        setuser(user)
+        location='/create'
       }
-
     } catch (e) {
       console.log("log: error message", e.message);
-    }
+    }    
+    setisLoggedIn(true)
+    history.push(location)
   }
 
-  async function createUserDocument() {
-    if (completedSignUp) {
-      await generateUserDocument(user);
-      console.log("log: after sign up", { user });
-      setcompletedSignUp(false);
-    }
-  }
-
-  function handleRedirect(user={}){
-    if(!user.uid) return 
+  function handleRedirect(){  
+    const isOnSignInPage = window.location.href.includes('signin') 
+    const isSignedIn = user && isLoggedIn 
+    if(!isSignedIn) return 
     if(!user.name) history.push('/create')
-    else console.log('log: redirect to player page')
+    else history.push('/')
   }
 
   useEffect(() => {
@@ -61,12 +60,7 @@ export default function SignInPage() {
   }, []);
 
   useEffect(() => {
-    createUserDocument();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [completedSignUp]);
-
-  useEffect(() => {
-    handleRedirect(user)
+    handleRedirect()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
@@ -84,6 +78,8 @@ export default function SignInPage() {
         <FormControl id="email" isRequired>
           <FormLabel>Email address</FormLabel>
           <Input
+          value={userCredentials.email}
+          onChange={(e)=>updateCredentials({email: e.target.value})}
             placeholder="your-email@example.com"
             _placeholder={{ color: "gray.500" }}
             type="email"
@@ -91,7 +87,7 @@ export default function SignInPage() {
         </FormControl>
         <FormControl id="password" isRequired>
           <FormLabel>Password</FormLabel>
-          <Input type="password" />
+          <Input value={userCredentials.password}  onChange={(e)=>updateCredentials({password: e.target.value})} type="password" />
         </FormControl>
         <Stack spacing={6}>
           <Button

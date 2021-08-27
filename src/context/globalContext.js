@@ -1,27 +1,37 @@
 import * as React from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { auth, firestore } from '../core/firebaseConfig';
 
 const GlobalContext = React.createContext()
 
 export function GlobalProvider({children}) {
-    const [coreUser, coreLoading] = useAuthState(auth);
-    const [user, loading] = useDocumentData(
-      firestore.doc(`users/${coreUser && coreUser.email}`),
-      {
-        snapshotListenOptions: { includeMetadataChanges: true },
-      }
-    );
-    const [isLoggedIn, setisLoggedInCore] = React.useState(sessionStorage.isLoggedIn || false)
+  const [user, setuser] = React.useState(null)
+  const [loading, setloading] = React.useState(true)
+  const [coreUser, coreLoading] = useAuthState(auth);
+  const [isLoggedIn, setisLoggedInCore] = React.useState(sessionStorage.isLoggedIn || false)
     
     function setisLoggedIn(val){
         if(!val) delete sessionStorage.isLoggedIn
         else sessionStorage.setItem('isLoggedIn', 'true')
         setisLoggedInCore(val)
     }
+
+    async function handleSignIn(){
+      if(coreLoading) return 
+      if(coreUser){
+        const userRef = firestore.doc(`users/${coreUser.email}`);
+        const user = await userRef.get() || {};
+        if(user.exists) setuser(user.data())  
+      }
+      setloading(false)
+    }
+
+    React.useEffect(() => {
+      handleSignIn()      
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [coreUser])
   return (
-    <GlobalContext.Provider value={{user, isLoggedIn, setisLoggedIn, loading: loading || coreLoading}} children={children} />
+    <GlobalContext.Provider value={{user, setuser, isLoggedIn, setisLoggedIn, loading: loading || coreLoading}} children={children} />
   )
 }
 

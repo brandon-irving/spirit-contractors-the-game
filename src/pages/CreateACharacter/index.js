@@ -8,7 +8,9 @@ import CharacterSummary from "./CharacterSummary";
 import SelectAWeapon from "./SelectAWeapon";
 import TwinButtons from "../../core/components/TwinButtons";
 import StepList from "../../core/components/StepList";
-
+import { updateUserDocument } from "../../core/firebaseConfig";
+import { useGlobalContext } from "../../context/globalContext";
+import { useHistory } from 'react-router-dom'
 const defaultCharacter = {
   name: "",
   spirit: "",
@@ -17,6 +19,8 @@ const defaultCharacter = {
 };
 
 const CreateACharacter = () => {
+  const history = useHistory()
+  const { user } = useGlobalContext()
   const [character, setcharacter] = React.useState(defaultCharacter);
   const [step, setstep] = React.useState("Name");
 
@@ -30,8 +34,10 @@ const CreateACharacter = () => {
     setcharacter({ ...character, ...updates });
   }
 
-  function handleComplete() {
+  async function handleComplete() {
     console.log('log: handleComplete', character)
+    await updateUserDocument(user, {...character, displayName: character.name})
+    history.push('/')
   }
 
   function handleNext() {

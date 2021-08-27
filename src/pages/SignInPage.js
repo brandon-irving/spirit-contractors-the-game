@@ -12,31 +12,31 @@ import {
 } from "@chakra-ui/react";
 import Card from "../core/components/Card";
 import SocialMediaButton from "../core/components/SocialMediaButton";
-import { auth, firestore, generateUserDocument } from "../core/firebaseConfig";
+import { auth, generateUserDocument } from "../core/firebaseConfig";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { useAuthState } from "react-firebase-hooks/auth";
-import {  useDocumentData } from "react-firebase-hooks/firestore";
+import { useGlobalContext } from "../context/globalContext";
+import { useHistory } from "react-router-dom";
 
 export default function SignInPage() {
-  const [user, loading,] = useAuthState(auth);
-  const [value] = useDocumentData(
-    firestore.doc(`users/${user && user.email}`),
-    {
-      snapshotListenOptions: { includeMetadataChanges: true },
-    }
-  );
+  const { user, loading, setisLoggedIn } = useGlobalContext()
+  const history = useHistory()
   const [createUserWithEmailAndPassword] = useCreateUserWithEmailAndPassword(auth);
   const [isSignIn, setisSignIn] = useState(true);
   const [completedSignUp, setcompletedSignUp] = useState(false);
 
   async function handleSubmit() {
     try {
-      if (isSignIn)
+      if (isSignIn){
         await auth.signInWithEmailAndPassword("test@test.com", "password");
+        setisLoggedIn(true)
+        history.push('/')
+      }
       else {
         await createUserWithEmailAndPassword("test@test.com", "password");
+        setisLoggedIn(true)
         setcompletedSignUp(true);
       }
+
     } catch (e) {
       console.log("log: error message", e.message);
     }
@@ -50,9 +50,9 @@ export default function SignInPage() {
     }
   }
 
-  function handleRedirect(value={}){
-    if(!value.uid) return 
-    if(!value.name) console.log('log: redirect to create')
+  function handleRedirect(user={}){
+    if(!user.uid) return 
+    if(!user.name) history.push('/create')
     else console.log('log: redirect to player page')
   }
 
@@ -66,8 +66,9 @@ export default function SignInPage() {
   }, [completedSignUp]);
 
   useEffect(() => {
-    handleRedirect(value)
-  }, [value]);
+    handleRedirect(user)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   if(loading) return null
   return (

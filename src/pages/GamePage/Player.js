@@ -11,12 +11,15 @@ import {
   WrapItem,
 } from "@chakra-ui/react";
 import React from "react";
+import { useGlobalContext } from "../../context/globalContext";
 import ActionsModal from "../../core/components/ActionsModal";
 import Card from "../../core/components/Card";
 import Gauge from "../../core/components/Gauge";
 import SpiritModal from "../../core/components/SpiritModal";
 import { stats } from "../../core/gameData/characterData";
+
 import "./Player.css";
+
 const spirit = {
     name: "Lucky Bunny",
     desc: "An average sized bunny, that wears a a turtle neck, shades and a gold necklace. He is the chief proprietor of luck and knows it. The only thing this bunny is interested in, is business. So hes always willing to sell you some luck, for the right price.",
@@ -35,9 +38,7 @@ const spirit = {
     strategy:
       "Hp is always a currency Lucky accepts, so stay near a healer and have plenty of potions around. If you ever come across something valuable, try haggling. With a silver tongue and some luck, you just might strike a deal with this bunny!",
   }
-const PlaceHolder = (props) => (
-  <Box m={0} bg="black" w="100vw" p={4} {...props} />
-);
+
 const PlayerSection = (props) => (
   <Box p={2} m={0} w="100vw" color="black" {...props} />
 );
@@ -78,6 +79,7 @@ const InfoStat = ({ label, value, text }) => (
   </Stat>
 );
 const Player = () => {
+  const { setisLoggedIn } = useGlobalContext()
     const [isOpen, setIsOpen] = React.useState(false)
     const [isActionModalOpen, setisActionModalOpen] = React.useState(false)
 
@@ -85,10 +87,17 @@ const Player = () => {
         setIsOpen(true)
     }
 
-    
+    function handleSignOut(){
+      console.log('log: sign out')
+      setisLoggedIn(false)
+    }
   return (
     <div>
-      <PlaceHolder />
+      <PlayerSection bg="black">
+        <Stack textAlign='right'>
+          <Text onClick={handleSignOut} color='white'>Sign Out</Text>
+        </Stack>
+      </PlayerSection>
       <PlayerSection bg="#333" borderBottom="1px solid" color="white">
         <Stack direction="row" align="center" justify="space-between">
           <Stack direction="row">

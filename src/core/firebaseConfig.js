@@ -15,6 +15,14 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
+export const updateUserDocument = async (user, updates={})=>{
+    const userRef = firestore.doc(`users/${user.email}`);
+    try {
+        await userRef.set({...user, ...updates});
+      } catch (error) {
+        console.error("Error creating user document", error);
+      }
+}
 export const generateUserDocument = async (user, additionalData) => {
     if (!user) return {};
     const userRef = firestore.doc(`users/${user.email}`);

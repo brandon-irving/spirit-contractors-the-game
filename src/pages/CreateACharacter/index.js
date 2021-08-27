@@ -11,6 +11,7 @@ import StepList from "../../core/components/StepList";
 import { updateUserDocument } from "../../core/firebaseConfig";
 import { useGlobalContext } from "../../context/globalContext";
 import { useHistory } from 'react-router-dom'
+import { statBoostGenerator } from "../../helpers/statBoostGenerator";
 const defaultCharacter = {
   name: "",
   spirit: "",
@@ -36,7 +37,18 @@ const CreateACharacter = () => {
 
   async function handleComplete() {
     console.log('log: handleComplete', character)
-    await updateUserDocument(user, {...character, displayName: character.name})
+    await updateUserDocument(user, {
+      ...character,
+      hp:
+        character.stats.Constitution +
+        10 +
+        statBoostGenerator(character.stats.Constitution),
+      mp:
+        character.stats.Wisdom +
+        10 +
+        statBoostGenerator(character.stats.Wisdom),
+      displayName: character.name,
+    });
     history.push('/')
   }
 

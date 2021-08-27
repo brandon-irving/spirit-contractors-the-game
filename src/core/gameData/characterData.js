@@ -5,13 +5,13 @@ export const stats = [
       value: 10,
     },
     {
-      name: "Dexterity",
-      desc: "This determines how good you are with your hands. Certain weapons and tasks require a high enough dexterity (such as archery and weilding a bow)",
+      name: "Constitution",
+      desc: "This determines your health (HP). It also gives you boosts on all health rolls (such as whether or not you catch an illness) ",
       value: 10,
     },
     {
-      name: "Speed",
-      desc: "This determines how far you move It also increases your chances on successful speed rolls (such as outrunning someone or something)",
+      name: "Dexterity",
+      desc: "This determines how good you are with your hands. Certain weapons and tasks require a high enough dexterity (such as archery and weilding a bow)",
       value: 10,
     },
     {

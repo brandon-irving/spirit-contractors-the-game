@@ -89,6 +89,12 @@ const Player = () => {
     setisLoggedIn(false);
   }
   const weapon = weapons[user.weapon];
+  const maxHp =  user.stats.Constitution +
+  10 +
+  statBoostGenerator(user.stats.Constitution)
+  const maxMp =  user.stats.Wisdom +
+  10 +
+  statBoostGenerator(user.stats.Wisdom)
   return (
     <div>
       <PlayerSection bg="black">
@@ -107,7 +113,10 @@ const Player = () => {
             <CharacterAlias name={user.name} />
           </Stack>
           <Stack>
-            <HitPoints hp={10} maxHp={10} />
+            <HitPoints
+              hp={user.hp}
+              maxHp={maxHp}
+            />
           </Stack>
         </Stack>
       </PlayerSection>
@@ -120,7 +129,7 @@ const Player = () => {
             value={<Avatar size="sm" src={weapon.img} />}
             text={weapon.roll}
           />
-          <InfoStat label="Walking" value="25ft" text="Speed" />
+          <InfoStat label="Walking" value="30ft" text="Speed" />
           <Avatar
             size="lg"
             onClick={handleSpiritClick}
@@ -179,11 +188,11 @@ const Player = () => {
       <Stack m={10} mt={6}>
         <Box>
           <Text>Hp</Text>
-          <Gauge />
+          <Gauge value={user.hp} maxValue={maxHp} convert />
         </Box>
         <Box>
           <Text>Mp</Text>
-          <Gauge color="blue" />
+          <Gauge value={user.mp} maxValue={maxMp} convert color="blue" />
         </Box>
       </Stack>
       <SpiritModal

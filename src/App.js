@@ -1,6 +1,7 @@
 import "./App.css";
-import { ChakraProvider } from "@chakra-ui/react";
+import {ChakraProvider } from "@chakra-ui/react";
 import CorePage from "./core/components/CorePage";
+import LoadingScreen from "./core/components/LoadingScreen";
 import theme from "./core/theme";
 import GamePage from "./pages/GamePage";
 import CreateACharacter from "./pages/CreateACharacter";
@@ -14,11 +15,8 @@ import { GlobalProvider, useGlobalContext } from "./context/globalContext";
 
 const PrivateRoute = ({ children, ...rest }) => {
   const { user, loading, isLoggedIn } = useGlobalContext();
-// console.log('log: user, loading,',{
-//   user, loading, isLoggedIn
-// })
 
-  if (loading) return null;
+  if (loading) return <LoadingScreen />
   return (
     <Route
       {...rest}

@@ -13,8 +13,8 @@ export function GlobalProvider({children}) {
         snapshotListenOptions: { includeMetadataChanges: true },
       }
     );
-
     const [isLoggedIn, setisLoggedInCore] = React.useState(sessionStorage.isLoggedIn || false)
+    
     function setisLoggedIn(val){
         if(!val) delete sessionStorage.isLoggedIn
         else sessionStorage.setItem('isLoggedIn', 'true')

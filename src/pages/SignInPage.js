@@ -35,8 +35,8 @@ export default function SignInPage() {
       if (isSignIn){
         const {user: coreUser = {email: ''}} = await auth.signInWithEmailAndPassword(userCredentials.email, userCredentials.password);
         const userRef = firestore.doc(`users/${coreUser.email}`);
-        const user = await userRef.get() || {};
-        if(user.exists) setuser(user.data())  
+        const user = await userRef.get() || {};        
+        if(user.exists && user.data()) setuser(user.data())  
         else {
          setuser({uid: coreUser.uid, email: coreUser.email, displayName: coreUser.displayName})
           location = '/create'
@@ -53,6 +53,8 @@ export default function SignInPage() {
       location = '/signin'
       errorToaster(`Signed in failed: ${e}`)
     }  
+    console.log('log: location', location)
+    
     setisLoggedIn(signinState)
     setsigningIn(false)
     history.push(location)
@@ -60,9 +62,11 @@ export default function SignInPage() {
 
   function handleRedirect(){  
     const isSignedIn = user && isLoggedIn 
+    console.log('log: user', user)
+    
     if(!isSignedIn) return     
-    if(!user.name) history.push('/create')
-    else history.push('/')
+    if(!user.name) return history.push('/create')
+    return history.push('/')
   }
 
   useEffect(() => {

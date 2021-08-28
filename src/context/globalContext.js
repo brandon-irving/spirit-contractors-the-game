@@ -1,6 +1,7 @@
 import { useToast } from '@chakra-ui/react';
 import * as React from 'react'
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { useAuthState,  } from 'react-firebase-hooks/auth';
+import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { auth, firestore } from '../core/firebaseConfig';
 
 const GlobalContext = React.createContext()
@@ -11,6 +12,18 @@ export function GlobalProvider({children}) {
   const [coreUser, coreLoading, error] = useAuthState(auth);
   const [isLoggedIn, setisLoggedInCore] = React.useState(sessionStorage.isLoggedIn || false)
   const toast = useToast()
+  const [realTimeUser, realTimeLoading, realTimeError] = useDocumentData(
+    firestore.doc(`users/${coreUser?.email}`),
+    {
+      snapshotListenOptions: { includeMetadataChanges: true },
+    }
+  );
+  React.useEffect(() => {
+    if(realTimeUser && !realTimeLoading && !realTimeError){
+      setuser(realTimeUser)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [realTimeUser])
   function successToaster(description, duration){
     toast({
       title: 'Success',

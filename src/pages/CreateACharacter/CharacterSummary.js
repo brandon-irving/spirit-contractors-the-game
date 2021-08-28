@@ -1,33 +1,26 @@
+import { Stack, Text } from '@chakra-ui/react'
 import React from 'react'
 import InfoCard from '../../core/components/InfoCard'
+const Info = ({title, descs})=> <Stack mt={3}>
+<Text mb={-2} fontWeight='bold' fontSize='xl'> {title}: </Text>
+{descs.map((desc, i)=><Text key={i}> {desc} </Text>)}
 
-const CharacterSummary = ({name, spirit, stats, weapon}) => {
-    return (
+</Stack>
+const CharacterSummary = ({character: {name, spirit, stats, weapon}}) => {
+    
+  return (
         <InfoCard
         bg="white"
-        name={'name'}
+        name={name}
         img={'img'}
-        badgeTitle="Action Data"
         width='80vw'
-        // badgeData={badgeData}
-        // actionRow={actionRow}
-        // primaryInfo={
-        //   <>
-        //     {desc}
-        //     <Text textAlign={"center"} fontSize="md" fontWeight="bold">
-        //       Requirements
-        //     </Text>
-        //     <Stack direction="row">
-        //       {Object.keys(requirements).map((rName, i) => {
-        //         return (
-        //           <li key={i}>
-        //             {rName}: {requirements[rName]}
-        //           </li>
-        //         );
-        //       })}
-        //     </Stack>
-        //   </>
-        // }
+        primaryInfo={
+          <>
+          <Info title='Spirit' descs={[spirit.name]} />
+          <Info title='Weapon' descs={[weapon]} />
+          <Info title='Stats' descs={Object.keys(stats).map(s=>`${s}: ${stats[s]}`)} />
+          </>
+        }
       />
     )
 }

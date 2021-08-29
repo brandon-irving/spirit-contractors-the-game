@@ -6,6 +6,11 @@ import {
   Stat,
   StatLabel,
   StatNumber,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   Text,
   Wrap,
   WrapItem,
@@ -14,9 +19,12 @@ import React from "react";
 import { useGlobalContext } from "../../context/globalContext";
 import ActionsModal from "../../core/components/ActionsModal";
 import Card from "../../core/components/Card";
-import Gauge from "../../core/components/Gauge";
+// import Gauge from "../../core/components/Gauge";
+import PlainInfoCard from "../../core/components/PlainInfoCard";
 import SpiritModal from "../../core/components/SpiritModal";
 import { stats } from "../../core/gameData/characterData";
+import { skills } from "../../core/gameData/Skills";
+import { spells } from "../../core/gameData/spells";
 import { weapons } from "../../core/gameData/weapons";
 import { statBoostGenerator } from "../../helpers/statBoostGenerator";
 
@@ -32,7 +40,7 @@ const CharacterAlias = ({ name = "Your Name", gil = 0, level = "1" }) => (
     <Text style={{ margin: 0 }}>Level {level}</Text>
   </Stack>
 );
-const Points = ({ title='', amount, maxAmount }) => (
+const Points = ({ title = "", amount, maxAmount }) => (
   <Box
     fontSize="15pt"
     m={0}
@@ -67,17 +75,14 @@ const Player = () => {
   }
 
   function handleSignOut() {
-    setuser(null)
-    setisLoggedIn(false)
+    setuser(null);
+    setisLoggedIn(false);
   }
   const weapon = weapons[user.weapon];
-  const maxHp =  user.stats.Constitution +
-  10 +
-  statBoostGenerator(user.stats.Constitution)
-  const maxMp =  user.stats.Wisdom +
-  10 +
-  statBoostGenerator(user.stats.Wisdom)
-  
+  const maxHp =
+    user.stats.Constitution + 10 + statBoostGenerator(user.stats.Constitution);
+  const maxMp = user.stats.Wisdom + 10 + statBoostGenerator(user.stats.Wisdom);
+
   return (
     <div>
       <PlayerSection bg="black">
@@ -95,17 +100,9 @@ const Player = () => {
             <Avatar src="" />
             <CharacterAlias gil={user.gil} name={user.name} />
           </Stack>
-          <Stack direction='row'>
-          <Points
-          title='Hp Points'
-              amount={user.hp}
-              maxAmount={maxHp}
-            />
-            <Points
-            title='Mp Points'
-            amount={user.mp}
-            maxAmount={maxMp}
-          />
+          <Stack direction="row">
+            <Points title="Hp Points" amount={user.hp} maxAmount={maxHp} />
+            <Points title="Mp Points" amount={user.mp} maxAmount={maxMp} />
           </Stack>
         </Stack>
       </PlayerSection>
@@ -174,6 +171,38 @@ const Player = () => {
           })}
         </Wrap>
       </PlayerSection>
+
+      {/* Row 4 */}
+      <PlayerSection>
+        <Tabs
+          color="white"
+          isFitted
+          variant="enclosed"
+        >
+          <TabList mb="1em">
+            <Tab>Skills</Tab>
+            <Tab>Spells</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <Stack spacing={4} overflow="scroll" direction="row">
+                {user.skills.length ? skills.map((s, i) => (
+                  <PlainInfoCard key={i} {...s} />
+                )) : <Text>No skills available</Text>}
+              </Stack>
+            </TabPanel>
+            <TabPanel>
+              <Stack spacing={4} overflow="scroll" direction="row">
+              {user.spells.length ? spells.map((s, i) => (
+                  <PlainInfoCard key={i} {...s} />
+                )) : <Text>No spells available</Text>}
+              </Stack>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </PlayerSection>
+      {/* 
+      TODO: decide if this should be in the design
       <Stack m={10} mt={6}>
         <Box>
           <Text>Hp</Text>
@@ -183,15 +212,17 @@ const Player = () => {
           <Text>Mp</Text>
           <Gauge value={user.mp} maxValue={maxMp} convert color="blue" />
         </Box>
-      </Stack>
-      <Stack align='center' m={10} mt={6}>
+      </Stack> */}
+      {/* 
+      TODO: decide if this should be in the design
+      <Stack align="center" m={10} mt={6}>
         <Text>Abilities</Text>
-       <ul>
-         {user.spirit.abilities.map((ability, i)=>{
-           return <li key={i}>{ability.name}</li>
-         })}
-       </ul>
-      </Stack>
+        <ul>
+          {user.spirit.abilities.map((ability, i) => {
+            return <li key={i}>{ability.name}</li>;
+          })}
+        </ul>
+      </Stack> */}
       <SpiritModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}

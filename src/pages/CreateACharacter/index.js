@@ -18,6 +18,8 @@ const defaultCharacter = {
   stats: defaultStats,
   weapon: 'Short Sword',
   gil: 10,
+  skills: [],
+  spells: [],
 };
 
 const CreateACharacter = () => {
